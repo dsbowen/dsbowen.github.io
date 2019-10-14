@@ -3,6 +3,7 @@ layout: post
 title:  "Flask-Worker"
 date:   2019-10-14 09:09:41 -0400
 categories: Flask
+permalink: flask-worker
 ---
 
 Flask-Worker simplifies interaction with a Redis Queue for executing long-running tasks in a Flask application. 
@@ -470,7 +471,7 @@ Change the default loading template for all workers using the manager:
 my_manager.template = 'my-template.html'
 ```
 
-Loading templates take a `worker` argument and should include the worker's script in their `scripts` block:
+Loading templates take their worker as a `worker` argument. They should include the worker's script in their `scripts` block:
 
 ```html
 {% raw %}{% block scripts %}
