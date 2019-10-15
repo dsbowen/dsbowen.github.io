@@ -471,10 +471,10 @@ Change the default loading template for all workers using the manager:
 my_manager.template = 'my-template.html'
 ```
 
-Loading templates take their worker as a `worker` argument. They should include the worker's script in their `scripts` block:
+Loading templates take their worker as a `worker` argument. They should include the worker's script in their head:
 
 ```html
-{% raw %}{% block scripts %}
-{{ worker.script() }}
-{% endblock %}{% endraw %}
+<head>
+  {% raw %}{{ worker.script() }}{% endraw %}
+</head>
 ```
