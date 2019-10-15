@@ -175,7 +175,7 @@ class Dropdownitem(DropdownitemMixin, db.Model):
 def before_first_request():
     db.create_all()
     bar = Navbar(name='my navbar')
-    Brand(bar=bar, url='https://pypi.org/project/sqlalchemy-nav/', label='SQLAlchemy-Nav')
+    Brand(bar=bar, url='https://pypi.org/project/sqlalchemy-nav', label='SQLAlchemy-Nav')
     Navitem(bar=bar, url=url_for('index'), label='Index ')
     item = Navitem(bar=bar, label='Dropdown')
     Dropdownitem(item=item, url=url_for('page1'), label='Page 1 ')
@@ -237,7 +237,7 @@ Recall that ```bar``` is the ```Navbar``` instance we passed to the index templa
 The app will look like:
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
- <a class="navbar-brand" href="https://dsbowen.github.io/sqlalchemy-nav/">
+ <a class="navbar-brand" href="https://dsbowen.github.io/sqlalchemy-nav">
   SQLAlchemy-Nav
  </a>
  <button aria-controls="navbarSupportedContent2" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-target="#navbarSupportedContent2" data-toggle="collapse" type="button">
