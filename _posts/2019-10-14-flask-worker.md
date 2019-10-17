@@ -459,6 +459,18 @@ Change the default loading image for all workers using the manager:
 my_manager.loading_img = 'my-loading-img.gif'
 ```
 
+If a worker's loading image is in the static folder of a blueprint, indicate this with:
+
+```python
+my_worker.blueprint = 'my-blueprint'
+```
+
+To set the blueprint for all workers:
+
+```python
+my_manager.blueprint = 'my-blueprint'
+```
+
 Change a worker's loading template with:
 
 ```python
