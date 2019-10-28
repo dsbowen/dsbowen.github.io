@@ -465,7 +465,7 @@ If a worker's loading image is in the static folder of a blueprint, indicate thi
 my_worker.blueprint = 'my-blueprint'
 ```
 
-To set the blueprint for all workers:
+Change the default blueprint for all workers using the manager:
 
 ```python
 my_manager.blueprint = 'my-blueprint'
