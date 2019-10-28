@@ -39,7 +39,7 @@ SQLALchemy-Function requires a [SQLAlchemy](https://www.sqlalchemy.org) database
 The following code will get you started with SQLAlchemy-Function as quickly as possible:
 
 ```python
-# 1. import FunctionMixin and FunctionBase
+# 1. Import FunctionMixin
 from sqlalchemy_function import FunctionMixin
 
 # 2. Standard session creation
@@ -100,17 +100,15 @@ A parent inherits the `FunctionBase` mixin. It must call its `_set_function_rela
 The `FunctionMixin` also defines an `index` column, which can be used to order `Function` models in an `ordering_list`.
 
 ```python
-class Child(FunctionMixin, Base):
-    __tablename__ = 'child'
-    id = Column(Integer, primary_key=True)
-    parent_id = Column(Integer, ForeignKey('parent.id'))
+# 1. Import FunctionBase
+from sqlalchemy_function import FunctionBase
 
-# 1. Define a Parent model with the FunctionBase mixin
+# 2. Define a Parent model with the FunctionBase mixin
 class Parent(FunctionBase, Base):
     __tablename__ = 'parent'
     id = Column(Integer, primary_key=True)
 
-    # 2. Fuction models must reference their parent with a 'parent' attribute
+    # 3. Fuction models must reference their parent with a 'parent' attribute
     functions = relationship(
         'Child',
         backref='parent',
@@ -118,9 +116,14 @@ class Parent(FunctionBase, Base):
         collection_class=ordering_list('index')
     )
 
-    # 3. Call _set_function_relationships before setting function attributes
+    # 4. Call _set_function_relationships before setting function attributes
     def __init__(self):
         self._set_function_relationships()
+
+class Child(FunctionMixin, Base):
+    __tablename__ = 'child'
+    id = Column(Integer, primary_key=True)
+    parent_id = Column(Integer, ForeignKey('parent.id'))
 
 Base.metadata.create_all(engine)
 ```
