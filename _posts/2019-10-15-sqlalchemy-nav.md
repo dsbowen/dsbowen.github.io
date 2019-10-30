@@ -215,7 +215,7 @@ if __name__ == '__main__':
 
 Next, we create an ```index.html``` file in our templates folder. The index template must:
 1. Include Bootstrap css and scripts.
-2. Execute ```{{ bar.render() }}```.
+2. Execute ```{% raw %}{{ bar.render() }}{% endraw %}```.
 
 Recall that ```bar``` is the ```Navbar``` instance we passed to the index template in step 7.
 
