@@ -93,7 +93,7 @@ Base.metadata.create_all(engine)
 
 ## Examples
 
-Full examples can be found at [https://github.com.dsbowen/sqlalchemy-orderingitem](https://github.com.dsbowen/sqlalchemy-orderingitem/blob/master/examples.py).
+Full examples can be found at [https://github.com.dsbowen/sqlalchemy-orderingitem](https://github.com/dsbowen/sqlalchemy-orderingitem/blob/master/examples.py).
 
 We begin by creating instances of `Parent`, `Child`, and `OrderingItemChild` models and commit them to the session:
 
