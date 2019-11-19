@@ -107,7 +107,7 @@ session.commit()
 
 ### Example 1: Setting a child's parent attribute to a parent instance
 
-Ordinary behavior:
+Without the `OrderingItem` subclass:
 
 ```python
 c.parent = p
@@ -120,7 +120,7 @@ Outputs:
 None
 ```
 
-With OrderingItem subclass:
+With the `OrderingItem` subclass:
 
 ```python
 oic.parent = p
@@ -135,7 +135,7 @@ Outputs:
 
 ### Example 2: Setting a child's parent attribute to None
 
-Ordnary behavior:
+Without the `OrderingItem` subclass:
 
 ```python
 p.children = [c]
@@ -149,7 +149,7 @@ Outputs:
 0
 ```
 
-With OrderingItem subclass:
+With the `OrderingItem` subclass:
 
 ```python
 p.orderingitem_children = [oic]
