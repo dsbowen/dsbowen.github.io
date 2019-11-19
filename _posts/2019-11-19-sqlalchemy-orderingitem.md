@@ -6,7 +6,7 @@ categories: SQLAlchemy
 permalink: sqlalchemy-orderingitem
 ---
 
-SQLAlchemy-OrderingItem provides an OrderingItem base for children of [orderinglist](https://docs.sqlalchemy.org/en/13/orm/extensions/orderinglist.html) relationships. Children of `orderinglist` relationships will exhibit more intuitive behavior when setting their parent attribute.
+SQLAlchemy-OrderingItem provides an OrderingItem base for children of [`orderinglist`](https://docs.sqlalchemy.org/en/13/orm/extensions/orderinglist.html) relationships. Children of `orderinglist` relationships will exhibit more intuitive behavior when setting their parent attribute.
 
 Readers can find the source code at [https://github.com/dsbowen/sqlalchemy-orderingitem](https://github.com/dsbowen/sqlalchemy-orderingitem).
 
@@ -15,6 +15,8 @@ Readers can find the source code at [https://github.com/dsbowen/sqlalchemy-order
 Publications which use this software should include the following citation for SQLAlchemy-OrderingItem:
 
 Bowen, D.S. (2019). SQLAlchemy-OrderingItem \[Computer software\]. [https://dsbowen.github.io/sqlalchemy-orderingitem](https://dsbowen.github.io/sqlalchemy-orderingitem).
+
+This project is licensed under the MIT License [LICENSE](https://github.com/dsbowen/sqlalchemy-orderingitem/blob/master/LICENSE).
 
 ## Getting started
 
@@ -87,7 +89,7 @@ class OrderingItemChild(OrderingItem, Base):
 Base.metadata.create_all(engine)
 ```
 
-*Note*: `OrderingItem` expects that the zeroth `order_by` column is the column on which the `orderinglist` sorts items.
+**Note**: `OrderingItem` expects that the zeroth `order_by` column is the column on which the `orderinglist` sorts items.
 
 ## Examples
 
@@ -103,7 +105,7 @@ session.add_all([p, c, oic])
 session.commit()
 ```
 
-### Example 1: Setting a child's parent attribute to a Parent instance
+### Example 1: Setting a child's parent attribute to a parent instance
 
 Ordinary behavior:
 
