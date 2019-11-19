@@ -12,7 +12,7 @@ A `Function` model has a parent (optional), a function, arguments, and keyword a
 
 ## License
 
-Publications which use this software should include the following citation for SQLAlchemy-Function and its dependency, [SQLAlchemy-Mutable](https://pypi.org/project/sqlalchemy-mutable/):
+Publications which use this software should include the following citation for SQLAlchemy-Function and its dependency, [SQLAlchemy-Mutable](https://pypi.org/project/sqlalchemy-mutable/).
 
 Bowen, D.S. (2019). SQLAlchemy-Function \[Computer software\]. [https://github.com/dsbowen/sqlalchemy-function](https://github.com/dsbowen/sqlalchemy-function).
 
