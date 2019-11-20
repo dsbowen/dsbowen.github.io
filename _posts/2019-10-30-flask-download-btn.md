@@ -18,10 +18,9 @@ Its key features are:
 3. *Progress bar*: Download buttons report progress using a progress bar updated with server-sent events.
 
 Additional features include:
-1. *Automatic zipping*: A download button will automatically zip multiple download files.
-2. *Automatic Cross-Site Request Forgery (CSRF) prevention*: Download button routes are automatically protected using CSRF tokens.
-3. *Caching*: Download buttons support cached download files.
-4. *Customizable styles*: Download buttons and progress bars support custom styling.
+1. *Automatic Cross-Site Request Forgery (CSRF) prevention*: Download button routes are automatically protected using CSRF tokens.
+2. *Caching*: Download buttons support cached download files.
+3. *Customizable styles*: Download buttons and progress bars support custom styling.
 
 Source code: [https://github.com/dsbowen/flask-download-btn](https://github.com/dsbowen/flask-download-btn)
 
@@ -96,9 +95,8 @@ class HandleForm(HandleFormMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     bnt_id = db.Column(db.Integer, db.ForeignKey('download_btn.id'))
 
-@app.before_first_request
-def before_first_request():
-    db.create_all()
+# 5. Create database tables
+db.create_all()
 
 # EXAMPLE CODE HERE
 
@@ -129,24 +127,47 @@ In `templates/index.html`:
 
 ## Examples
 
-See the full setup and examples [here](https://github.com/dsbowen/flask-download-btn).
+See the full setup and examples [here](https://github.com/dsbowen/flask-download-btn/blob/master/app.py).
+
+### Helper methods
+
+Before our example routes, we define helper varaibles and methods for creating and storing buttons:
+1. Download URLs for `hello_world.txt` and `hello_moon.txt`.
+2. A method to add and commit a download button to the session.
+3. A method to look up a button.
+4. A method to clear the session before the first app request.
+
+```python
+HELLO_WORLD_URL = 'https://test-bucket2357.s3.us-east-2.amazonaws.com/hello_world.txt'
+HELLO_MOON_URL = 'https://test-bucket2357.s3.us-east-2.amazonaws.com/hello_moon.txt'
+
+def add_to_session(btn, key):
+    db.session.add(btn)
+    db.session.commit()
+    session[key] = btn.id
+
+def get_btn(key):
+    if key in session:
+        return DownloadBtn.query.get(session[key])
+
+@app.before_first_request
+def clear_session():
+    session.clear()
+```
 
 ### Example 1: Basic use
 
-Example 1 illustrates the basic use of Flask-Download-Btn. `text` is the button text, and `filenames` is a list of file names to download.
+Example 1 illustrates the basic use of Flask-Download-Btn. `text` is the button text, and `downloads` is a list of `(URL, attachment_filename)` tuples to download.
 
 ```python
 @app.route('/')
 def index():
-    """Example 1: Basic use"""
-    btn = DownloadBtn.query.filter_by(name='example1').first()
+    btn = get_btn('example1')
     if not btn:
         btn = DownloadBtn()
-        btn.name = 'example1'
         btn.text = 'Download Example 1'
-        btn.filenames = ['hello_world.txt']
-        db.session.add(btn)
-        db.session.commit()
+        btn.downloads = [(HELLO_WORLD_URL, 'hello_world.txt')]
+        add_to_session(btn, 'example1')
     return render_template('index.html', download_btn=btn)
 ```
 
@@ -160,37 +181,56 @@ In your application, the button is disabled when clicked until it downloads `hel
 
 ### Example 2: Multiple files
 
-Download buttons with multiple filenames automatically create and return a zip archive. We set the name of the attachment with `attachment_filename`.
-
-To run this example, add a `hello_moon.txt` file to your root directory.
+Download buttons support downloading multiple files.
 
 ```python
 @app.route('/example2')
 def example2():
     """Example 2: Multiple files"""
-    btn = DownloadBtn.query.filter_by(name='example2').first()
+    btn = get_btn('example2')
     if not btn:
         btn = DownloadBtn()
-        btn.name = 'example2'
         btn.text = 'Download Example 2'
-        btn.filenames = ['hello_world.txt', 'hello_moon.txt']
-        btn.attachment_filename = 'example2.zip'
-        db.session.add(btn)
-        db.session.commit()
+        btn.downloads = [
+            (HELLO_WORLD_URL, 'hello_world.txt'), 
+            (HELLO_MOON_URL, 'hello_moon.txt')
+        ]
+        add_to_session(btn, 'example2')
     return render_template('index.html', download_btn=btn)
 ```
 
-On click, this button will download a zip file named `example2.zip` containing `hello_world.txt` and `hello_moon.txt`.
+### Example 3: Callback routes
 
-### Example 3: Web form handling
+Download buttons can replace the window with a `callback` routes after the files have downloaded.
+
+```python
+from flask import url_for
+
+@app.route('/example3')
+def example3():
+    btn = get_btn('example3')
+    if not btn:
+        btn = DownloadBtn()
+        btn.text = 'Download Example 3'
+        btn.downloads = [(HELLO_WORLD_URL, 'hello_world.txt')]
+        btn.callback = url_for('download_success')
+        add_to_session(btn, 'example3')
+    return render_template('index.html', download_btn=btn)
+
+@app.route('/download-success')
+def download_success():
+    return 'Download Successful'
+```
+
+### Example 4: Web form handling
 
 Download buttons can respond to input from web forms using `HandleForm` [function models](https://dsbowen.github.io/sqlalchemy-function). You can access a download button's list of `HandleForm` models with its `handle_form_functions` attribute. On click, the download button executes its `HandleForm` functions in list order.
 
 When executed, `HandleForm` models execute their function (`func`), passing in their button as the first argument and the `flask.request.form` dictionary as the second argument, followed by the `HandleForm` instance's `args` and `kwargs`.
 
-In this example, we create a web form in the `example3.html` template. This form asks clients to select which files they would like to download. Our download button's `HandleForm` function sets its `filenames` to the filenames selected in the web form.
+In this example, we create a web form in the `example4.html` template. This form asks clients to select which files they would like to download. Our download button's `HandleForm` function sets its `downloads` to the files selected in the web form.
 
-In `templates/example3.html`:
+In `templates/example4.html`:
 
 ```html
 <html>
@@ -224,21 +264,23 @@ In `templates/example3.html`:
 In `app.py`:
 
 ```python
-@app.route('/example3')
-def example3():
-    """Example 3: Form handling"""
-    btn = DownloadBtn.query.filter_by(name='example3').first()
+@app.route('/example4')
+def example4():
+    btn = get_btn('example4')
     if not btn:
         btn = DownloadBtn()
-        btn.name = 'example3'
-        btn.text = 'Download Example 3'
+        btn.text = 'Download Example 4'
         HandleForm(btn, func=select_files)
-        db.session.add(btn)
-        db.session.commit()
-    return render_template('example3.html', download_btn=btn)
+        add_to_session(btn, 'example4')
+    return render_template('example4.html', download_btn=btn)
 
-def select_files(btn, response):
-    btn.filenames = response.getlist('selectFiles')
+def select_files(btn, resp):
+    btn.downloads = []
+    files = resp.getlist('selectFiles')
+    if 'hello_world.txt' in files:
+        btn.downloads.append((HELLO_WORLD_URL, 'hello_world.txt'))
+    if 'hello_moon.txt' in files:
+        btn.downloads.append((HELLO_MOON_URL, 'hello_moon.txt'))
 ```
 
 This code creates the following page:
@@ -247,23 +289,23 @@ This code creates the following page:
 <div id="selectFiles" name="selectFiles">
     <p>Select files to download.</p>
     <div class="form-check">
-        <input id="helloWorld_exmpl3" name="selectFiles" type="checkbox" class="form-check-input" value="hello_world.txt">
-        <label class="form-check-label" for="helloWorld_exmpl3">Hello World</label>
+        <input id="helloWorld_exmpl4" name="selectFiles" type="checkbox" class="form-check-input" value="hello_world.txt">
+        <label class="form-check-label" for="helloWorld_exmpl4">Hello World</label>
     </div>
     <div class="form-check">
-        <input id="helloMoon_exmpl3" name="selectFiles" type="checkbox" class="form-check-input" value="hello_moon.txt">
-        <label class="form-check-label" for="helloMoon_exmpl3">Hello Moon</label>
+        <input id="helloMoon_exmpl4" name="selectFiles" type="checkbox" class="form-check-input" value="hello_moon.txt">
+        <label class="form-check-label" for="helloMoon_exmpl4">Hello Moon</label>
     </div>
 </div>
 </form>
 <br>
 <button id="DownloadBtn-1-btn" type="button" class="btn btn-primary w-100" style="">
-    Download Example 3
+    Download Example 4
 </button>
 
 **Note**: If you have multiple web forms on a page, select the form you want the download button to handle by settings its `form_id` attribute.
 
-### Example 4: File creation
+### Example 5: File creation
 
 A Download Button also has a list of `CreateFile` function models. You can access a download button's `CreateFile` models with its `create_file_functions` attribute. After form handling, the download button executes its `CreateFile` functions in list order.
 
@@ -275,49 +317,52 @@ As the name suggests, `CreateFile` models are often used to create download file
 
 `reset` refreshes the progress bar for abrupt transitions, such as resetting the progress bar from 100% to 0% when starting a new stage. `report` updates the current progress bar without refreshing it for smooth transitions.
 
-In this example, we assign two `CreateFile` functions to our download button. Because these functions take a long time to run, we cache the results by setting the button's `use_cache` attribute to `True`.
+In this example, we assign two `CreateFile` functions to our download button. Because these functions take a long time to run, we cache the results by setting the button's `cache` attribute to `default`.
 
 ```python
 import time
 
-@app.route('/example4')
-def example4():
-    """Example 4: File creation"""
-    session.clear()
-    btn = DownloadBtn.query.filter_by(name='example4').first()
+@app.route('/example5')
+def example5():
+    btn = get_btn('example5')
     if not btn:
         btn = DownloadBtn()
-        btn.name = 'example4'
-        btn.text = 'Download Example 4'
-        btn.use_cache = True
+        btn.text = 'Download Example 5'
+        btn.cache = 'default'
         CreateFile(btn, func=create_file1, kwargs={'seconds': 5})
         CreateFile(btn, func=create_file2, kwargs={'centiseconds': 400})
-        btn.filenames = ['hello_world.txt', 'hello_moon.txt']
-        db.session.add(btn)
-        db.session.commit()
+        btn.downloads = [
+            (HELLO_WORLD_URL, 'hello_world.txt'), 
+            (HELLO_MOON_URL, 'hello_moon.txt')
+        ]
+        add_to_session(btn, 'example5')
     return render_template('index.html', download_btn=btn)
 
 def create_file1(btn, seconds):
-    yield btn.reset(stage='Download Started', pct_complete=0)
-    for i in range(seconds):
-        yield btn.report('Creating File 1', 100.0*i/seconds)
+    stage = 'Creating File 1'
+    yield btn.reset(stage=stage, pct_complete=0)
+    if not btn.downloaded:
+        for i in range(seconds):
+            yield btn.report(stage, 100.0*i/seconds)
+            time.sleep(1)
+        yield btn.report(stage, 100.0)
         time.sleep(1)
-    yield btn.report('Creating file 1', 100.0)
-    time.sleep(1)
 
 def create_file2(btn, centiseconds):
-    yield btn.reset('Creating File 2', 0)
-    for i in range(centiseconds):
-        yield btn.report('Creating File 2', 100.0*i/centiseconds)
+    stage = 'Creating File 2'
+    yield btn.reset(stage, 0)
+    if not btn.downloaded:
+        for i in range(centiseconds):
+            yield btn.report(stage, 100.0*i/centiseconds)
+            time.sleep(.01)
+        yield btn.report(stage, 100)
         time.sleep(.01)
-    yield btn.report('Download Complete', 100)
-    time.sleep(.01)
 ```
 
 During file creation, our download button and progress bar look like:
 
 <button id="DownloadBtn-1-btn" type="button" class="btn btn-primary w-100" style="" disabled>
-    Download Example 4
+    Download Example 5
 </button>
 <div id="DownloadBtn-1-progress">
     <div class="progress position-relative" style="height: 25px; background-color: #C8C8C8; margin-top: 10px; margin-bottom: 10px; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25) inset;">
@@ -330,11 +375,11 @@ During file creation, our download button and progress bar look like:
 </div>
 <br>
 
-### Example 5: With style
+### Example 6: With style
 
-Example 5 combines elements from previous examples with styling.
+Example 6 combines elements from previous examples with styling.
 
-In `templates/example5.html`:
+In `templates/example6.html`:
 
 ```html
 <html>
@@ -373,27 +418,23 @@ In `templates/example5.html`:
 In `app.py`:
 
 ```python
-@app.route('/example5')
-def example5():
-    """Example 5: With style"""
-    session.clear()
-    btn = DownloadBtn.query.filter_by(name='example5').first()
+@app.route('/example6')
+def example6():
+    btn = get_btn('example6')
     if not btn:
         btn = DownloadBtn()
-        btn.name = 'example5'
         btn.btn_classes.remove('btn-primary')
         btn.btn_classes.append('btn-outline-primary')
         btn.progress_classes.append('progress-bar-striped')
         btn.progress_classes.append('progress-bar-animated')
-        btn.text = 'Download Example 5'
+        btn.text = 'Download Example 6'
+        btn.cache = 'default'
         HandleForm(btn, func=select_files)
         CreateFile(btn, func=create_file1, kwargs={'seconds': 4})
         CreateFile(btn, func=create_file2, kwargs={'centiseconds': 300})
-        btn.transition_speed = '.7s'
         btn.download_msg = 'Download Complete'
-        db.session.add(btn)
-        db.session.commit()
-    return render_template('example5.html', download_btn=btn)
+        add_to_session(btn, 'example6')
+    return render_template('example6.html', download_btn=btn)
 ```
 
 During download, our page will look like:
@@ -422,7 +463,7 @@ During download, our page will look like:
     </div>
     <br>
     <button id="DownloadBtn-1-btn" type="button" class="btn w-100 btn-outline-primary" style="" disabled>
-        Download Example 5
+        Download Example 6
     </button>
 </form>
 </div>
