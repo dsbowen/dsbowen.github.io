@@ -95,16 +95,16 @@ hello world
 
 Examples 2-4 illustrate how to `Function` parents. When called, an instance of a `Function` model with a `'parent'` attribute will call its function, passing in its parent as the first argument (followed by its arguments and keyword arguments).
 
-A parent inherits the `FunctionBase` mixin. It must call its `_set_function_relationships` method before setting any `Function` attributes.
+Models which relate to a `Function` model should inherit the `FunctionRelator` base for convenience.
 
 The `FunctionMixin` also defines an `index` column, which can be used to order `Function` models in an `ordering_list`.
 
 ```python
-# 1. Import FunctionBase
-from sqlalchemy_function import FunctionBase
+# 1. Import FunctionRelator
+from sqlalchemy_function import FunctionRelator
 
-# 2. Define a Parent model with the FunctionBase mixin
-class Parent(FunctionBase, Base):
+# 2. Define a Parent model with the FunctionRelator base
+class Parent(FunctionRelator, Base):
     __tablename__ = 'parent'
     id = Column(Integer, primary_key=True)
 
@@ -115,10 +115,6 @@ class Parent(FunctionBase, Base):
         order_by='Child.index',
         collection_class=ordering_list('index')
     )
-
-    # 4. Call _set_function_relationships before setting function attributes
-    def __init__(self):
-        self._set_function_relationships()
 
 class Child(FunctionMixin, Base):
     __tablename__ = 'child'
