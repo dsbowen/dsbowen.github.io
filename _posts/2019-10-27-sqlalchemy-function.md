@@ -12,11 +12,11 @@ A `Function` model has a parent (optional), a function, arguments, and keyword a
 
 ## License
 
-Publications which use this software should include the following citation for SQLAlchemy-Function and its dependency, [SQLAlchemy-Mutable](https://pypi.org/project/sqlalchemy-mutable/).
+Publications which use this software should include the following citation for SQLAlchemy-Function and its dependency, [SQLAlchemy-Mutable](https://dsbowen.github.io/sqlalchemy-mutable):
 
-Bowen, D.S. (2019). SQLAlchemy-Function \[Computer software\]. [https://github.com/dsbowen/sqlalchemy-function](https://github.com/dsbowen/sqlalchemy-function).
+Bowen, D.S. (2019). SQLAlchemy-Function \[Computer software\]. [https://dsbowen.github.io/sqlalchemy-function](https://dsbowen.github.io/sqlalchemy-function)
 
-Bowen, D.S. (2019). SQLAlchemy-Mutable \[Computer software\]. [https://github.com/dsbowen/sqlalchemy-mutable](https://github.com/dsbowen/sqlalchemy-mutable).
+Bowen, D.S. (2019). SQLAlchemy-Mutable \[Computer software\]. [https://dsbowen.github.io/sqlalchemy-mutable](https://dsbowen.github.io/sqlalchemy-mutable)
 
 This project is licensed under the MIT License [LICENSE](https://github.com/dsbowen/sqlalchemy-function/blob/master/LICENSE).
 
@@ -91,7 +91,7 @@ My keyword arguments are: {'hello': 'star'}
 hello world
 ```
 
-### Additional setup for Exampels 2-4: Function parents
+### Additional setup for Exampele 2: Function parents
 
 Examples 2-4 illustrate how to `Function` parents. When called, an instance of a `Function` model with a `'parent'` attribute will call its function, passing in its parent as the first argument (followed by its arguments and keyword arguments).
 
@@ -153,7 +153,47 @@ My keyword arguments are: {'hello': 'star'}
 hello world
 ```
 
-### Examples 3-4: Automatic conversion of functions to Function models
+### Example 3: Function registrars
+
+`FunctionRegistrars` simplify the syntax for creating `Function` models and attaching them to their parents.
+
+Using a `FunctionRegistrar`, creating a function model and attaching it to a parent resembles calling the function.
+
+```python
+# 1. Import `FunctionRegistrar`
+from sqlalchemy_function import FunctionRegistrar
+
+# 2. Define a registrar by subclassing `FunctionRegistrar`
+class Registrar(FunctionRegistrar):
+    # 3. Registrars reference their associated Function model with the 
+    # `function_model` attribute
+    function_model = Child
+
+# 4. Register the function
+@Registrar.register
+def foo(parent, *args, **kwargs):
+    print('My parent is:', parent)
+    print('My args are:', args)
+    print('My kwargs are:', kwargs)
+    return 'hello world'
+
+p.functions.clear()
+Registrar.foo(p, 'hello moon', hello='star')
+print(p.functions)
+print(p.functions[0]())
+```
+
+Outputs:
+
+```
+[<__main__.Child object at 0x7f257fe7cda0>]
+My parent is: <__main__.Parent object at 0x7f2581f5c630>
+My args are: ('hello moon',)
+My kwargs are: {'hello': 'star'}
+hello world
+```
+
+### Examples 4-5: Automatic conversion of functions to Function models
 
 When setting a `Function` attribute, parents automatically convert functions to `Function` models.
 
