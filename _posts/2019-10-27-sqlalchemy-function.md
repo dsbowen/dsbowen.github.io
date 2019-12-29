@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "SQLAlchemy-Function"
-date: 2019-10-27 22:42:00
+date: 2019-12-29
 categories: SQLAlchemy
 permalink: sqlalchemy-function
 ---
@@ -91,9 +91,9 @@ My keyword arguments are: {'hello': 'star'}
 hello world
 ```
 
-### Additional setup for Exampele 2: Function parents
+### Additional setup for Exampeles 2-5: Function parents
 
-Examples 2-4 illustrate how to `Function` parents. When called, an instance of a `Function` model with a `'parent'` attribute will call its function, passing in its parent as the first argument (followed by its arguments and keyword arguments).
+Examples 2-5 illustrate how to `Function` parents. When called, an instance of a `Function` model with a `'parent'` attribute will call its function, passing in its parent as the first argument (followed by its arguments and keyword arguments).
 
 Models which relate to a `Function` model should inherit the `FunctionRelator` base for convenience.
 
@@ -153,24 +153,14 @@ My keyword arguments are: {'hello': 'star'}
 hello world
 ```
 
-### Example 3: Function registrars
+### Example 3: Function registrarion
 
-`FunctionRegistrars` simplify the syntax for creating `Function` models and attaching them to their parents.
+Function registration simplifies the syntax for creating a `Function` model and associating it with a parent. 
 
-Using a `FunctionRegistrar`, creating a function model and attaching it to a parent resembles calling the function.
+After registering a function with a `Function` model, storing a function resembles an ordinary function call.
 
 ```python
-# 1. Import `FunctionRegistrar`
-from sqlalchemy_function import FunctionRegistrar
-
-# 2. Define a registrar by subclassing `FunctionRegistrar`
-class Registrar(FunctionRegistrar):
-    # 3. Registrars reference their associated Function model with the 
-    # `function_model` attribute
-    function_model = Child
-
-# 4. Register the function
-@Registrar.register
+@Child.register # register the function with the `Function` model
 def foo(parent, *args, **kwargs):
     print('My parent is:', parent)
     print('My args are:', args)
@@ -178,7 +168,8 @@ def foo(parent, *args, **kwargs):
     return 'hello world'
 
 p.functions.clear()
-Registrar.foo(p, 'hello moon', hello='star')
+# storing a function resembles an ordinary function call
+Child.foo(p, 'hello moon', hello='star') 
 print(p.functions)
 print(p.functions[0]())
 ```
