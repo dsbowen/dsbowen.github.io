@@ -93,7 +93,7 @@ hello world
 
 ### Additional setup for Exampeles 2-5: Function parents
 
-Examples 2-5 illustrate how to `Function` parents. When called, an instance of a `Function` model with a `'parent'` attribute will call its function, passing in its parent as the first argument (followed by its arguments and keyword arguments).
+Examples 2-5 illustrate how to use `Function` parents. When called, an instance of a `Function` model with a `parent` attribute will call its function, passing in its parent as the first argument (followed by its arguments and keyword arguments).
 
 Models which relate to a `Function` model should inherit the `FunctionRelator` base for convenience.
 
@@ -108,7 +108,7 @@ class Parent(FunctionRelator, Base):
     __tablename__ = 'parent'
     id = Column(Integer, primary_key=True)
 
-    # 3. Fuction models must reference their parent with a 'parent' attribute
+    # 3. Fuction models must reference their parent with a `parent` attribute
     functions = relationship(
         'Child',
         backref='parent',
@@ -153,7 +153,7 @@ My keyword arguments are: {'hello': 'star'}
 hello world
 ```
 
-### Example 3: Function registrarion
+### Example 3: Function registration
 
 Function registration simplifies the syntax for creating a `Function` model and associating it with a parent. 
 
