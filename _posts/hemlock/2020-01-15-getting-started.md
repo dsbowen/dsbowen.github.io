@@ -9,7 +9,7 @@ permalink: hemlock/getting-started
 Here are the prerequisites I recommend to take advantage of the full range of tools Hemlock offers. Unless otherwise specified, I recommend you download the latest stable version of the following:
 
 **Essential**
-1. *Python3 and pip3*. Python is Hemlock's primary language. pip allows you to install Python packages, including Hemlock itself. I recommend [Python3.6](https://www.python.org/downloads/release/python-366/), the version you will use for Heroku deployment (see below).
+1. *Python3 and pip3*. Python is Hemlock's primary language. pip allows you to install Python packages, including Hemlock itself. I recommend [Python3.6](https://www.python.org/downloads/release/python-366/), the version you will use for Heroku deployment (see below). Additionally, you should be able to create [virtual environments](https://docs.python.org/3/library/venv.html).
 2. *Code editor*. I work in [Visual Studio (VS) Code](https://code.visualstudio.com/download) with the [Remote-WSL](https://code.visualstudio.com/docs/remote/wsl) extension, but any code editor will do.
 
 **Strongly recommended**
@@ -24,8 +24,8 @@ The software below is encouraged for debugging, file storage, and Redis testing.
 1. *Google Chrome and Chromedriver*. Hemlock's custom debugging tool requires [Google Chrome](https://www.google.com/chrome/) and [Chromedriver](https://chromedriver.chromium.org/downloads) to run locally.
 2. *Google Cloud and Cloud SDK*. Hemlock easily integrates with [Google Cloud](https://cloud.google.com/) for storing statics (such as images to display during a survey) and user uploaded files. The Hemlock command line interface builds on [Cloud Software Development Kit (SDK)](https://cloud.google.com/sdk/).
 
-**Advanced (Windows only)**
-1. *Ubuntu on WSL*. Hemlock seamlessly interfaces with [Redis](https://redis.io) to run complex background processes during surveys. Because Windows cannot natively run Redis, I recommend [Ubuntu](https://ubuntu.com/) on [Windows Subsystem for Linux (WSL)](https://docs.microsoft.com/en-us/windows/wsl/install-win10). Redis runs natively on Mac and Linux.
+**Advanced**
+1. *Redis*. Hemlock seamlessly interfaces with [Redis](https://redis.io) to run complex background processes during surveys. Redis runs natively on Mac and Linux. For Windows users, I recommend [Ubuntu](https://ubuntu.com/) on [Windows Subsystem for Linux (WSL)](https://docs.microsoft.com/en-us/windows/wsl/install-win10). 
 
 ## Instructions for Windows
 
@@ -88,13 +88,13 @@ hlk, version x.x.x
 
 ### 4. Recommended software
 
-Install other recommended software with `sudo hlk install [options]`. The options specify which recommended software tools you want to download. For example, to install VS Code, Heroku-CLI, Git, Google Chrome and Chromedriver, and Cloud SDK, run:
+Install other Hemlock utilities and recommended software with `sudo hlk install [options]`. The options specify which recommended software tools you want to download. For example, to install VS Code, Heroku-CLI, Git, Google Chrome and Chromedriver, and Cloud SDK, run:
 
 ```
-$ sudo hlk setup --vscode --heroku-cli --git --chrome --cloud-sdk
+$ hlk setup --vscode --heroku-cli --git --chrome --cloud-sdk
 ```
 
-VS Code and Cloud SDK will open setup executables automatically. Simply follow the directions when prompted.
+VS Code and Cloud SDK will open setup executables automatically. Follow the directions when prompted.
 
 You will also be prompted to login or create acconts for Heroku-CLI, Git, and Cloud SDK.
 
@@ -107,6 +107,12 @@ $ git --version
 $ google-chrome --version
 $ chromedriver --version
 $ gcloud --version
+```
+
+Finally, if you are using gcloud, you will need the alpha component:
+
+```
+$ gcloud components install alpha
 ```
 
 ## Instructions for Mac and Linux in progress
