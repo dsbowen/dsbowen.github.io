@@ -10,7 +10,7 @@ Here are the prerequisites I recommend to take advantage of the full range of to
 
 **Essential**
 1. *Python3 and pip3*. Python is Hemlock's primary language. pip allows you to install Python packages, including Hemlock itself. I recommend [Python3.6](https://www.python.org/downloads/release/python-366/), the version you will use for Heroku deployment (see below).
-2. *Code editor*. I work in [Visual Studio (VS) Code](https://code.visualstudio.com/), but any code editor will do.
+2. *Code editor*. I work in [Visual Studio (VS) Code](https://code.visualstudio.com/download) with the [Remote-WSL](https://code.visualstudio.com/docs/remote/wsl) extension, but any code editor will do.
 
 **Strongly recommended**
 1. *Heroku and Heroku-CLI*. [Heroku](https://heroku.com/) is an inexpensive and accessible service for deploying web applications. The Hemlock command line interface builds on the [Heroku command line interface (CLI)](https://devcenter.heroku.com/articles/heroku-cli).
@@ -27,7 +27,7 @@ The software below is encouraged for debugging, file storage, and Redis testing.
 **Advanced (Windows only)**
 1. *Ubuntu on WSL*. Hemlock seamlessly interfaces with [Redis](https://redis.io) to run complex background processes during surveys. Because Windows cannot natively run Redis, I recommend [Ubuntu](https://ubuntu.com/) on [Windows Subsystem for Linux (WSL)](https://docs.microsoft.com/en-us/windows/wsl/install-win10). Redis runs natively on Mac and Linux.
 
-## Detailed instructions for Windows users
+## Instructions for Windows
 
 Overview:
 1. Install Ubuntu and Windows Subsystem for Linux (WSL).
@@ -43,15 +43,10 @@ Open an Ubuntu terminal. You will be prompted to create a username and password.
 
 ### 2. Python3 and pip3
 
-Ubuntu should include Python3.6. To verify, enter the following in your Ubuntu terminal window:
+Ubuntu should include Python3.6. Verify your Python installation with:
 
 ```
 $ python3 --version
-```
-
-Expected output:
-
-```
 Python 3.6.x
 ```
 
@@ -64,52 +59,46 @@ $ sudo apt-get update
 Install pip3 with:
 
 ```
-$ sudo apt-get install -f -y python3-pip
+$ sudo apt install -f -y python3-pip
 ```
 
-Finally, verify pip3 installation with:
+Respond 'Yes' if asked whether you want to restart services automatically.
+
+Finally, verify pip3 installation:
 
 ```
 $ pip3 --version
-```
-
-Expected output:
-
-```
 pip x.x.x from /usr/lib/python3/dist-packages (python 3.6)
 ```
 
 ### 3. Hemlock-CLI
 
-pip install the Hemlock command line interface (CLI) with:
+pip install the Hemlock command line interface (CLI):
 
 ```
 $ pip3 install hemlock-cli
 ```
 
-Verify `hemlock-cli` installation with:
+Verify `hemlock-cli` installation:
 
 ```
 $ hlk --version
-```
-
-Expected output:
-
-```
-hemlock-cli 0.0.x
+hlk, version x.x.x
 ```
 
 ### 4. Recommended software
 
-Install other recommended software with `hlk install [options]`. The options specify which recommended software tools you want to download. For example, to install Visual Studio Code, Heroku-CLI, Git, Google Chrome and Chromedriver, and Cloud SDK, run:
+Install other recommended software with `sudo hlk install [options]`. The options specify which recommended software tools you want to download. For example, to install VS Code, Heroku-CLI, Git, Google Chrome and Chromedriver, and Cloud SDK, run:
 
 ```
-$ hlk install --vscode --heroku-cli --git --chrome --cloud-sdk
+$ sudo hlk setup --vscode --heroku-cli --git --chrome --cloud-sdk
 ```
 
-Before installing Heroku-CLI, Git, or Cloud SDK, make sure you have Heroku, Github, and Google Cloud accounts, respectively.
+VS Code and Cloud SDK will open setup executables automatically. Simply follow the directions when prompted.
 
-Verify the installations with:
+You will also be prompted to login or create acconts for Heroku-CLI, Git, and Cloud SDK.
+
+To verify the installations, close and re-open the Ubuntu terminal, then enter:
 
 ```
 $ code --version
@@ -120,4 +109,4 @@ $ chromedriver --version
 $ gcloud --version
 ```
 
-## Detailed instructions for Mac and Linux in progress
+## Instructions for Mac and Linux in progress
