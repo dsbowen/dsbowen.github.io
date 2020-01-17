@@ -6,7 +6,7 @@ categories: SQLAlchemy
 permalink: sqlalchemy-modelid
 ---
 
-SQAlchemy-ModelID defines a base with a `model_id` property for [SQLAlchemy](https://www.sqlalchemy.org/) models.
+SQAlchemy-ModelId defines a base with a `model_id` property for [SQLAlchemy](https://www.sqlalchemy.org/) models.
 
 The `model_id` property distinguishes model instances with the same identity from different tables.
 
