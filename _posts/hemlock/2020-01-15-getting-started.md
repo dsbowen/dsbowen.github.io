@@ -88,7 +88,7 @@ hlk, version x.x.x
 
 ### 4. Recommended software
 
-Install other Hemlock utilities and recommended software with `sudo hlk install [options]`. The options specify which recommended software tools you want to download. For example, to install VS Code, Heroku-CLI, Git, Google Chrome and Chromedriver, and Cloud SDK, run:
+Install other Hemlock utilities and recommended software with `hlk setup [options]`. The options specify which recommended software tools you want to download. For example, to install VS Code, Heroku-CLI, Git, Google Chrome and Chromedriver, and Cloud SDK, run:
 
 ```
 $ hlk setup --vscode --heroku-cli --git --chrome --cloud-sdk
@@ -96,7 +96,7 @@ $ hlk setup --vscode --heroku-cli --git --chrome --cloud-sdk
 
 VS Code and Cloud SDK will open setup executables automatically. Follow the directions when prompted.
 
-You will also be prompted to login or create acconts for Heroku-CLI, Git, and Cloud SDK.
+You will also be prompted to login or create accounts for Heroku-CLI, Git, and Cloud SDK.
 
 To verify the installations, close and re-open the Ubuntu terminal, then enter:
 
