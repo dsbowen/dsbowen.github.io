@@ -88,7 +88,13 @@ hlk, version x.x.x
 
 ### 4. Recommended software
 
-Install other Hemlock utilities and recommended software with `hlk setup [options]`. The options specify which recommended software tools you want to download. For example, to install VS Code, Heroku-CLI, Git, Google Chrome and Chromedriver, and Cloud SDK, run:
+Install other Hemlock utilities and recommended software with `hlk setup [options]`. The options specify which recommended software tools you want to download. To download all recommended software, run:
+
+```
+$ hlk setup --all
+```
+
+This is equivalent to:
 
 ```
 $ hlk setup --vscode --heroku-cli --git --chrome --cloud-sdk

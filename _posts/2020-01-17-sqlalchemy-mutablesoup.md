@@ -8,6 +8,8 @@ permalink: sqlalchemy-mutablesoup
 
 SQLAlchemy-MutableSoup defines a mutable [BeautifulSoup](https://www.crummy.com/software/BeautifulSoup/bs4/doc/) [SQLAlchemy](https://www.sqlalchemy.org/) database type.
 
+Readers can find the source code at [https://github.com/dsbowen/sqlalchemy-mutablesoup](https://github.com/dsbowen/sqlalchemy-mutablesoup).
+
 ## License
 
 Publications which use this software should include the following citation:

@@ -10,6 +10,8 @@ SQAlchemy-ModelId defines a base with a `model_id` property for [SQLAlchemy](htt
 
 The `model_id` property distinguishes model instances with the same identity from different tables.
 
+Readers can find the source code at [https://github.com/dsbowen/sqlalchemy-modelid](https://github.com/dsbowen/sqlalchemy-modelid).
+
 ## License
 
 This project is licensed under the MIT License [LICENSE](https://github.com/dsbowen/sqlalchemy-modelid/blob/master/LICENSE).

@@ -11,15 +11,17 @@ SQLAlchemy-Mutable provides generic nested mutable objects and iterables for SQL
 1. Nested mutation tracking
 2. Mutation tracking for iterables (```list``` and ```dict```)
 3. Support for embedded database models
-4. Support for common literals
+4. Support for common literals and `datetime` objects
 5. Support for custom Mutable classes
 6. Support for converting existing classes to Mutable classes
+
+Readers can find the source code at [https://github.com/dsbowen/sqlalchemy-mutable](https://github.com/dsbowen/sqlalchemy-mutable).
 
 ## License
 
 Publications which use this software should include the following citation:
 
-Bowen, D.S. (2019). SQLAlchemy-Mutable \[Computer software\]. [https://github.com/dsbowen/sqlalchemy-mutable](https://github.com/dsbowen/sqlalchemy-mutable)
+Bowen, D.S. (2019). SQLAlchemy-Mutable \[Computer software\]. [https://dsbowen.github.io/sqlalchemy-mutable](https://dsbowen.github.io/sqlalchemy-mutable).
 
 This project is licensed under the MIT License [LICENSE](https://github.com/dsbowen/sqlalchemy-mutable/blob/master/LICENSE).
 
@@ -35,7 +37,7 @@ $ pip install -U sqlalchemy-mutable
 
 ### Requirements
 
-SQLAlchemy-Mutable is compatible with [SQLAlchemy](https://www.sqlalchemy.org).
+SQLAlchemy-Mutable requires a [SQLAlchemy](https://www.sqlalchemy.org) database.
 
 ### Setup
 
@@ -77,7 +79,7 @@ Base.metadata.create_all(engine)
 
 ## Examples
 
-See full examples with [SQLAlchemy](https://github.com/dsbowen/sqlalchemy-mutable/blob/master/examples.py) and [Flask-SQLAlchemy](https://github.com/dsbowen/sqlalchemy-mutable/blob/master/flask_sqlalchemy_examples.py)
+See full examples with [SQLAlchemy](https://github.com/dsbowen/sqlalchemy-mutable/blob/master/examples.py) and [Flask-SQLAlchemy](https://github.com/dsbowen/sqlalchemy-mutable/blob/master/flask_sqlalchemy_examples.py).
 
 ### Example 1: Nested mutation tracking
 
@@ -295,4 +297,4 @@ Fortunately, I have already defined ```MutableList``` and ```MutableDict```. The
 
 ## Acknowledgements
 
-Much inspiration drawn from [SQLAlchemy-JSON](https://pypi.org/project/sqlalchemy-json/)
+Much inspiration drawn from [SQLAlchemy-JSON](https://pypi.org/project/sqlalchemy-json/).
