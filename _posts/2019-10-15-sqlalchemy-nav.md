@@ -7,26 +7,29 @@ permalink: sqlalchemy-nav
 ---
 
 <head>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" ></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 </head>
 
-SQLAlchemy-Nav provides [SQLAlchemy Mixins](https://docs.sqlalchemy.org/en/13/orm/extensions/declarative/mixins.html) for creating Bootstrap navigation bars. Its Mixins are:
+SQLAlchemy-Nav provides [SQLAlchemy Mixins](https://docs.sqlalchemy.org/en/13/orm/extensions/declarative/mixins.html) for creating navigation bars compatible with [Bootstrap 4](https://getbootstrap.com/docs/4.4/components/navbar/). Its Mixins are:
 
 1. ```NavbarMixin``` for creating navigation bars
-2. ```BrandMixin``` for adding a brand to the navbar
-3. ```NavitemMixin``` for adding nav-items to the navbar
-4. ```DropdownitemMixin``` for adding dropdown-items to nav-items
+2. ```NavitemMixin``` for adding nav-items to the navbar
+3. ```DropdownitemMixin``` for adding dropdown-items to nav-items
+
+Readers can find the source code at [https://github.com/dsbowen/sqlalchemy-nav](https://github.com/dsbowen/sqlalchemy-nav).
 
 ## License
 
-Publications which use this software should include the following citation for SQLAlchemy-Nav and its dependency, [SQLAlchemy-Mutable](https://pypi.org/project/sqlalchemy-mutable/):
+Publications which use this software should include the following citation for SQLAlchemy-Nav, as well as its dependencies [SQLAlchemy-MutableSoup](https://dsbowen.github.io/sqlalchemy-mutablesoup) and [SQLAlchemy-OrderingItem](https://dsbowen.github.io/sqlalchemy-orderingitem):
 
-Bowen, D.S. (2019). SQLAlchemy-Nav \[Computer software\]. [https://github.com/dsbowen/sqlalchemy-nav](https://github.com/dsbowen/sqlalchemy-nav)
+Bowen, D.S. (2019). SQLAlchemy-Nav \[Computer software\]. [https://github.com/dsbowen/sqlalchemy-nav](https://dsbowen.github.io/sqlalchemy-nav).
 
-Bowen, D.S. (2019). SQLAlchemy-Mutable \[Computer software\]. [https://github.com/dsbowen/sqlalchemy-mutable](https://github.com/dsbowen/sqlalchemy-mutable)
+Bowen, D.S. (2020). SQLAlchemy-MutableSoup [Computer software]. [https://dsbowen.github.io/sqlalchemy-mutablesoup](https://dsbowen.github.io/sqlalchemy-mutablesoup).
+
+Bowen, D.S. (2019). SQLAlchemy-OrderingItem [Computer software]. [https://dsbowen.github.io/sqlalchemy-orderingitem](https://dsbowen.github.io/sqlalchemy-orderingitem).
 
 This project is licensed under the MIT License [LICENSE](https://github.com/dsbowen/sqlalchemy-nav/blob/master/LICENSE).
 
@@ -42,18 +45,18 @@ $ pip install -U sqlalchemy-nav
 
 ### Requirements
 
-SQLAlchemy-Nav requires [SQLAlchemy](https://www.sqlalchemy.org). To use its output in an html template, include [Bootstrap](https://getbootstrap.com/) css and scripts. Tested on Bootstrap v4.3.1.
+SQLAlchemy-Nav requires a [SQLAlchemy](https://www.sqlalchemy.org) database. To use its output in an HTML template, include [Bootstrap](https://getbootstrap.com/) css and scripts. Tested on Bootstrap versions 4.3.1-4.4.1.
 
 ### Setup
 
 The following code will get you started with SQLAlchemy-Nav as quickly as possible:
 
 ```python
-# 1. Import classes from sqlalchemy_nav
-from sqlalchemy_nav import BrandMixin, DropdownitemMixin, NavbarMixin, NavitemMixin
+# 1. Import bases from sqlalchemy_nav
+from sqlalchemy_nav import NavbarMixin, NavitemMixin, DropdownitemMixin
 
 # 2. Standard session creation
-from sqlalchemy import create_engine, Column, Integer
+from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -67,9 +70,6 @@ Base = declarative_base()
 class Navbar(NavbarMixin, Base):
     __tablename__ = 'navbar'
 
-class Brand(BrandMixin, Base):
-    __tablename__ = 'brand'
-
 class Navitem(NavitemMixin, Base):
     __tablename__ = 'navitem'
     
@@ -82,74 +82,149 @@ Base.metadata.create_all(engine)
 
 ## Examples
 
-### Example 1. Use with SQLAlchemy
+Full examples can be found at [https://github.com/dsbowen/sqlalchemy-nav](https://github.com/dsbowen/sqlalchemy-nav).
 
-This example generates html for a Bootstrap Navbar using the SQLAlchemy setup above. You can find the full setup and example [here](https://github.com/dsbowen/sqlalchemy-nav/blob/master/example.py).
+### Example 1. Basic use
+
+This example generates HTML for a Bootstrap Navbar using the SQLAlchemy setup above.
 
 ```python
-bar = Navbar()
-Brand(bar=bar, url='/', label='dsbowen.github.io')
-Navitem(bar=bar, url='/about', label='About')
-item = Navitem(bar=bar, label='Projects')
-Dropdownitem(item=item, url='/flask-worker', label='Flask-Worker')
-Dropdownitem(item=item, url='/sqlalchemy-mutable', label='SQLAlchemy-Mutable')
-Dropdownitem(item=item, url='/sqlalchemy-nav', label='SQLAlchemy-Nav')
+navbar = Navbar(label='Home', href='https://dsbowen.github.io')
+# Navbars are fixed to the top by default; we remove it here for demonstration
+navbar.body.select_one('nav')['class'].remove('fixed-top')
+Navitem(navbar, label='About', href='/about')
+navitem = Navitem(navbar, dropdown=True, label='Projects')
+Dropdownitem(navitem, label='Flask-Worker', href='/flask-worker')
+Dropdownitem(navitem, label='SQLAlchemy-Mutable', href='/sqlalchemy-mutable')
+session.add(navbar)
+session.commit()
+print(navbar.render().prettify())
 ```
 
-You can now include `bar.render()` in an html template with Bootstrap css and scripts. The output will be:
+Output:
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
- <a class="navbar-brand" href="/">
-  dsbowen.github.io
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+ <a class="navbar-brand" href="https://dsbowen.github.io">
+  Home
  </a>
- <button aria-controls="navbarSupportedContent1" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-target="#navbarSupportedContent1" data-toggle="collapse" type="button">
+ <button aria-controls="navbar-1" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-target="#navbar-1" data-toggle="collapse" type="button">
   <span class="navbar-toggler-icon">
   </span>
  </button>
- <div class="collapse navbar-collapse" id="navbarSupportedContent1">
+ <div class="collapse navbar-collapse" id="navbar-1">
   <ul class="navbar-nav mr-auto">
    <li class="nav-item">
     <a class="nav-link" href="/about">
      About
     </a>
    </li>
-   <li class="nav-item">
-    <a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="navbarDropdownNone" role="button">
+   <li class="nav-item dropdown">
+    <a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle" data-toggle="dropdown" href="" id="navitem-2" role="button">
      Projects
     </a>
-    <div aria-labelledby="navbarDropdownNone" class="dropdown-menu">
+    <div aria-labelledby="navitem-2" class="dropdown-menu">
      <a class="dropdown-item" href="/flask-worker">
       Flask-Worker
      </a>
      <a class="dropdown-item" href="/sqlalchemy-mutable">
       SQLAlchemy-Mutable
      </a>
-     <a class="dropdown-item" href="/sqlalchemy-nav">
-      SQLAlchemy-Nav
-     </a>
     </div>
    </li>
   </ul>
  </div>
 </nav>
-<br/>
+<br>
 
-## Example 2: Toy web app with Flask-SQLAlchemy
+### Example 2: Customization
 
-This example shows how to use SQLAlchemy-Nav to create dynamic navigation bars in web apps. You can find the full setup and example [here](https://github.com/dsbowen/sqlalchemy-nav/blob/master/flask_example.py).
+The HTML of all SQLAlchemy-Nav mixins is contained in a `body` attribute. The `body` is can be treated as a `BeautifulSoup` object (see [SQLAlchemy-MutableSoup](https://dsbowen.github.io/sqlalchemy-mutablesoup)). This gives the programmer full control over the Navbar HTML. 
+
+In this example, we add a search bar to the above navbar.
+
+```python
+from bs4 import BeautifulSoup
+
+searchbar_html = '''
+<form class="form-inline">
+    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+</form>
+'''
+searchbar = BeautifulSoup(searchbar_html, 'html.parser')
+navbar.body.select_one('nav').append(searchbar)
+navbar.body.changed() # See SQLAlchemy-MutableSoup for details
+session.commit()
+print(navbar.render().prettify())
+```
+
+Output:
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+ <a class="navbar-brand" href="https://dsbowen.github.io">
+  Home
+ </a>
+ <button aria-controls="navbar-1" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-target="#navbar-1" data-toggle="collapse" type="button">
+  <span class="navbar-toggler-icon">
+  </span>
+ </button>
+ <div class="collapse navbar-collapse" id="navbar-1">
+  <ul class="navbar-nav mr-auto">
+   <li class="nav-item">
+    <a class="nav-link" href="/about">
+     About
+    </a>
+   </li>
+   <li class="nav-item dropdown">
+    <a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle" data-toggle="dropdown" href="" id="navitem-2" role="button">
+     Projects
+    </a>
+    <div aria-labelledby="navitem-2" class="dropdown-menu">
+     <a class="dropdown-item" href="/flask-worker">
+      Flask-Worker
+     </a>
+     <a class="dropdown-item" href="/sqlalchemy-mutable">
+      SQLAlchemy-Mutable
+     </a>
+    </div>
+   </li>
+  </ul>
+ </div>
+ <form class="form-inline">
+  <input aria-label="Search" class="form-control mr-sm-2" placeholder="Search" type="search"/>
+  <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
+   Search
+  </button>
+ </form>
+</nav>
+<br>
+
+### Example 3: Toy web app with Flask-SQLAlchemy
+
+This example shows how to use SQLAlchemy-Nav to create dynamic navigation bars in web apps.
 
 Our web app uses [Flask](http://flask.palletsprojects.com/en/1.1.x/) and [Flask-SQLAlchemy](https://flask-sqlalchemy.palletsprojects.com/en/2.x/).
 
-### Python file
+#### Folder structure
 
-We begin by creating the ```Navbar``` instance before the first app request. I name the navigation bar so that we can find it later using ```query.filter_by(name='name')```. We then use the navbar to keep a tally of how many times each link on the dropdown menu was visited.
+For our app, we need a Python file `app.py` and an `index.html` file in a `templates` folder.
+
+```
+app.py
+templates/
+    index.html
+```
+
+#### Python file
+
+We begin with a standard setup, then create the ```Navbar``` instance before the first app request. I name the navigation bar so that we can find it later using ```query.filter_by(name='name')```. Finally, we use the navbar to keep a tally of how many times each link on the dropdown menu was visited.
  
 ```python
 # 1. Import Mixins from sqlalchemy_nav
-from sqlalchemy_nav import BrandMixin, DropdownitemMixin, NavbarMixin, NavitemMixin
+from sqlalchemy_nav import NavbarMixin, NavitemMixin, DropdownitemMixin
 
 # 2. Import Flask classes, methods, and extensions and initialize app
-from flask import Flask, render_template, url_for
+from flask import Flask, Markup, render_template, url_for
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
@@ -159,10 +234,8 @@ db = SQLAlchemy(app)
 
 # 3. Use the SQLAlchemy-Nav Mixins to create database models
 class Navbar(NavbarMixin, db.Model):
-    pass
-
-class Brand(BrandMixin, db.Model):
-    pass
+    def render(self):
+        return Markup(str(super().render()))
 
 class Navitem(NavitemMixin, db.Model):
     pass
@@ -174,61 +247,63 @@ class Dropdownitem(DropdownitemMixin, db.Model):
 @app.before_first_request
 def before_first_request():
     db.create_all()
-    bar = Navbar(name='my navbar')
-    Brand(bar=bar, url='https://pypi.org/project/sqlalchemy-nav', label='SQLAlchemy-Nav')
-    Navitem(bar=bar, url=url_for('index'), label='Index ')
-    item = Navitem(bar=bar, label='Dropdown')
-    Dropdownitem(item=item, url=url_for('page1'), label='Page 1 ')
-    Dropdownitem(item=item, url=url_for('page2'), label='Page 2 ')
-    db.session.add(bar)
+    navbar = Navbar(name='my-navbar', label='Home', href='https://dsbowen.github.io')
+    Navitem(navbar, label='Index ', href='/')
+    navitem = Navitem(navbar, label='Pages', dropdown=True)
+    Dropdownitem(navitem, label='Page 1 ', href='/page1')
+    Dropdownitem(navitem, label='Page 2 ', href='/page2')
+    db.session.add(navbar)
     db.session.commit()
     
 @app.route('/')
 def index():
     # 5. Recover the Navbar instance by name
-    bar = Navbar.query.filter_by(name='my navbar').first()
+    navbar = Navbar.query.filter_by(name='my-navbar').first()
     # 6. Tally visits to the index route
-    bar.navitems[0].label += 'x'
+    index_item = navbar.navitems[0]
+    index_item.label = index_item.label + 'x'
     db.session.commit()
     # 7. Pass the Navbar instance to the html template
-    return render_template('index.html', bar=bar, content='Index page')
+    return render_template('index.html', navbar=navbar, content='Index page')
 
 @app.route('/page1')
 def page1():
-    bar = Navbar.query.filter_by(name='my navbar').first()
-    bar.navitems[1].dropdownitems[0].label += 'x'
+    navbar = Navbar.query.filter_by(name='my-navbar').first()
+    page1_item = navbar.navitems[1].dropdownitems[0]
+    page1_item.label = page1_item.label + 'x'
     db.session.commit()
-    return render_template('index.html', bar=bar, content='Page 1')
+    return render_template('index.html', navbar=navbar, content='Page 1')
 
 @app.route('/page2')
 def page2():
-    bar = Navbar.query.filter_by(name='my navbar').first()
-    bar.navitems[1].dropdownitems[1].label += 'x'
+    navbar = Navbar.query.filter_by(name='my-navbar').first()
+    page2_item = navbar.navitems[1].dropdownitems[1]
+    page2_item.label = page2_item.label + 'x'
     db.session.commit()
-    return render_template('index.html', bar=bar, content='Page 2')
+    return render_template('index.html', navbar=navbar, content='Page 2')
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
 ```
 
-### Html template
+#### HTML template
 
 Next, we create an ```index.html``` file in our templates folder. The index template must:
 1. Include Bootstrap css and scripts.
-2. Execute ```{% raw %}{{ bar.render() }}{% endraw %}```.
+2. Execute ```{% raw %}{{ navbar.render() }}{% endraw %}```.
 
-Recall that ```bar``` is the ```Navbar``` instance we passed to the index template in step 7.
+Recall that ```navbar``` is the ```Navbar``` instance we passed to the index template in step 7.
 
 ```html
 <html>
   <head>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" ></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
   </head>
   <body>
-    {% raw %}{{ bar.render() }}
+    {% raw %}{{ navbar.render() }}
     {{ content }}{% endraw %}
   </body>
 </html>
@@ -236,156 +311,39 @@ Recall that ```bar``` is the ```Navbar``` instance we passed to the index templa
 
 The app will look like:
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
- <a class="navbar-brand" href="https://dsbowen.github.io/sqlalchemy-nav">
-  SQLAlchemy-Nav
- </a>
- <button aria-controls="navbarSupportedContent2" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-target="#navbarSupportedContent2" data-toggle="collapse" type="button">
-  <span class="navbar-toggler-icon">
-  </span>
- </button>
- <div class="collapse navbar-collapse" id="navbarSupportedContent2">
-  <ul class="navbar-nav mr-auto">
-   <li class="nav-item active">
-    <a class="nav-link" href="/">
-     Index x
-    </a>
-   </li>
-   <li class="nav-item">
-    <a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="navbarDropdown2" role="button">
-     Dropdown
-    </a>
-    <div aria-labelledby="navbarDropdown2" class="dropdown-menu">
-     <a class="dropdown-item" href="/page1">
-      Page 1
-     </a>
-     <a class="dropdown-item" href="/page2">
-      Page 2 xx
-     </a>
-    </div>
-   </li>
-  </ul>
- </div>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<a class="navbar-brand" href="https://dsbowen.github.io">Home</a>
+<button aria-controls="navbar-1" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-target="#navbar-1" data-toggle="collapse" type="button">
+<span class="navbar-toggler-icon"></span>
+</button>
+<div class="collapse navbar-collapse" id="navbar-1">
+<ul class="navbar-nav mr-auto"><li class="nav-item active">
+<a class="nav-link" href="/">Index x</a>
+</li><li class="nav-item dropdown">
+<a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle" data-toggle="dropdown" href="" id="navitem-2" role="button">Pages</a>
+<div aria-labelledby="navitem-2" class="dropdown-menu"><a class="dropdown-item" href="/page1">Page 1 </a><a class="dropdown-item" href="/page2">Page 2 </a></div>
+</li></ul>
+</div>
 </nav>
-Index
-<br/>
+Index page
+<br>
 
-### View the example
+#### Run the example
 
-To view the working example, run the app:
+To run the working example, run the app:
 
 ```bash
-$ python my_app.py
+$ export FLASK_APP=<app>
+$ flask run
 ```
 
-Alternatively, you can clone the SQLAlchemy-Nav repo and run ```flask_example.py```.
+Alternatively, you can clone the SQLAlchemy-Nav repo and run.
 
 ```bash
 $ git clone https://github.com/dsbowen/sqlalchemy-nav.git
 $ cd sqlalchemy-nav
-$ python flask_example.py
+$ export FLASK_APP=flask_example
+$ flask run
 ```
 
 Then open ```http://localhost:5000``` in your browser.
-
-## Customization and defaults
-
-Change a tag's classes with its `classes` attribute:
-
-```python
-bar.classes.remove('navbar-dark')
-bar.classes.remove('bg-dark')
-bar.classes.append('navbar-light')
-bar.classes.append('bg-light')
-```
-
-Applied to our earlier example:
-
-
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
- <a class="navbar-brand" href="/">
-  dsbowen.github.io
- </a>
- <button aria-controls="navbarSupportedContent3" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-target="#navbarSupportedContent3" data-toggle="collapse" type="button">
-  <span class="navbar-toggler-icon">
-  </span>
- </button>
- <div class="collapse navbar-collapse" id="navbarSupportedContent3">
-  <ul class="navbar-nav mr-auto">
-   <li class="nav-item">
-    <a class="nav-link" href="/about">
-     About
-    </a>
-   </li>
-   <li class="nav-item">
-    <a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="navbarDropdownNone" role="button">
-     Projects
-    </a>
-    <div aria-labelledby="navbarDropdownNone" class="dropdown-menu">
-     <a class="dropdown-item" href="/flask-worker">
-      Flask-Worker
-     </a>
-     <a class="dropdown-item" href="/sqlalchemy-mutable">
-      SQLAlchemy-Mutable
-     </a>
-     <a class="dropdown-item" href="/sqlalchemy-nav">
-      SQLAlchemy-Nav
-     </a>
-    </div>
-   </li>
-  </ul>
- </div>
-</nav>
-<br/>
-
-Add custom html, such as a search bar:
-
-```python
-bar.custom_html = """
-<form class="form-inline">
-    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-</form>
-"""
-```
-
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
- <a class="navbar-brand" href="/">
-  dsbowen.github.io
- </a>
- <button aria-controls="navbarSupportedContent4" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-target="#navbarSupportedContent4" data-toggle="collapse" type="button">
-  <span class="navbar-toggler-icon">
-  </span>
- </button>
- <div class="collapse navbar-collapse" id="navbarSupportedContent4">
-  <ul class="navbar-nav mr-auto">
-   <li class="nav-item">
-    <a class="nav-link" href="/about">
-     About
-    </a>
-   </li>
-   <li class="nav-item">
-    <a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="navbarDropdownNone" role="button">
-     Projects
-    </a>
-    <div aria-labelledby="navbarDropdownNone" class="dropdown-menu">
-     <a class="dropdown-item" href="/flask-worker">
-      Flask-Worker
-     </a>
-     <a class="dropdown-item" href="/sqlalchemy-mutable">
-      SQLAlchemy-Mutable
-     </a>
-     <a class="dropdown-item" href="/sqlalchemy-nav">
-      SQLAlchemy-Nav
-     </a>
-    </div>
-   </li>
-  </ul>
-  <form class="form-inline">
-   <input aria-label="Search" class="form-control mr-sm-2" placeholder="Search" type="search"/>
-   <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
-    Search
-   </button>
-  </form>
- </div>
-</nav>
