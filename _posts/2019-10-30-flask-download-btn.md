@@ -26,13 +26,15 @@ Source code: [https://github.com/dsbowen/flask-download-btn](https://github.com/
 
 ## License
 
-Publications which use this software should include the following citation for SQLAlchemy-Function and its dependencies, [SQLAlchemy-Function](https://dsbowen.github.io/sqlalchemy-function) and [SQLAlchemy-Mutable](https://dsbowen.github.io/sqlalchemy-mutable):
+Publications which use this software should include the following citation for SQLAlchemy-Function and its dependencies, [SQLAlchemy-Function](https://dsbowen.github.io/sqlalchemy-function), [SQLAlchemy-Mutable](https://dsbowen.github.io/sqlalchemy-mutable), and [SQLAlchemy-MutableSoup](https://dsbowen.github.io.sqlalchemy-mutablesoup):
 
 Bowen, D.S. (2019). Flask-Download-Btn\[Computer software\]. [https://dsbowen.github.io/flask-download-btn](https://dsbowen.github.io/flask-download-btn).
 
 Bowen, D.S. (2019). SQLAlchemy-Function \[Computer software\]. [https://dsbowen.github.io/sqlalchemy-function](https://dsbowen.github.io/sqlalchemy-function).
 
 Bowen, D.S. (2019). SQLAlchemy-Mutable \[Computer software\]. [https://dsbowen.github.io/sqlalchemy-mutable](https://dsbowen.github.io/sqlalchemy-mutable).
+
+Bowen, D.S. (2020). SQLAlchemy-MutableSoup [Computer software]. [https://dsbowen.github.io/sqlalchemy-mutablesoup](https://dsbowen.github.io/sqlalchemy-mutablesoup).
 
 This project is licensed under the MIT License [LICENSE](https://github.com/dsbowen/flask-download-btn/blob/master/LICENSE).
 
@@ -58,7 +60,6 @@ Our initial file structure will be:
 
 ```
 app.py
-hello_world.txt
 templates/
     index.html
 ```
@@ -162,19 +163,18 @@ Example 1 illustrates the basic use of Flask-Download-Btn. `text` is the button 
 ```python
 @app.route('/')
 def index():
-    btn = get_btn('example1')
+    btn = get_btn('basic')
     if not btn:
         btn = DownloadBtn()
-        btn.text = 'Download Example 1'
         btn.downloads = [(HELLO_WORLD_URL, 'hello_world.txt')]
-        add_to_session(btn, 'example1')
+        add_to_session(btn, 'basic')
     return render_template('index.html', download_btn=btn)
 ```
 
 Your download button will look like:
 
 <button id="DownloadBtn-1-btn" type="button" class="btn btn-primary w-100" style="">
-    Download Example 1
+    Download
 </button>
 
 In your application, the button is disabled when clicked until it downloads `hello_world.txt`. (The button above is not functional).
@@ -184,18 +184,16 @@ In your application, the button is disabled when clicked until it downloads `hel
 Download buttons support downloading multiple files.
 
 ```python
-@app.route('/example2')
-def example2():
-    """Example 2: Multiple files"""
-    btn = get_btn('example2')
+@app.route('/mutli-file')
+def multi_file():
+    btn = get_btn('mutli-file')
     if not btn:
         btn = DownloadBtn()
-        btn.text = 'Download Example 2'
         btn.downloads = [
             (HELLO_WORLD_URL, 'hello_world.txt'), 
             (HELLO_MOON_URL, 'hello_moon.txt')
         ]
-        add_to_session(btn, 'example2')
+        add_to_session(btn, 'mutli-file')
     return render_template('index.html', download_btn=btn)
 ```
 
@@ -206,15 +204,14 @@ Download buttons can replace the window with a `callback` routes after the files
 ```python
 from flask import url_for
 
-@app.route('/example3')
-def example3():
-    btn = get_btn('example3')
+@app.route('/callback')
+def callback():
+    btn = get_btn('callback')
     if not btn:
         btn = DownloadBtn()
-        btn.text = 'Download Example 3'
         btn.downloads = [(HELLO_WORLD_URL, 'hello_world.txt')]
         btn.callback = url_for('download_success')
-        add_to_session(btn, 'example3')
+        add_to_session(btn, 'callback')
     return render_template('index.html', download_btn=btn)
 
 @app.route('/download-success')
@@ -230,7 +227,7 @@ When executed, `HandleForm` models execute their function (`func`), passing in t
 
 In this example, we create a web form in the `example4.html` template. This form asks clients to select which files they would like to download. Our download button's `HandleForm` function sets its `downloads` to the files selected in the web form.
 
-In `templates/example4.html`:
+In `templates/form-handling.html`:
 
 ```html
 <html>
@@ -264,16 +261,16 @@ In `templates/example4.html`:
 In `app.py`:
 
 ```python
-@app.route('/example4')
-def example4():
-    btn = get_btn('example4')
+@app.route('/form-handling')
+def form_handling():
+    btn = get_btn('form-handling')
     if not btn:
         btn = DownloadBtn()
-        btn.text = 'Download Example 4'
-        HandleForm(btn, func=select_files)
-        add_to_session(btn, 'example4')
-    return render_template('example4.html', download_btn=btn)
+        HandleForm.select_files(btn)
+        add_to_session(btn, 'form-handling')
+    return render_template('form-handling.html', download_btn=btn)
 
+@HandleForm.register
 def select_files(btn, resp):
     btn.downloads = []
     files = resp.getlist('selectFiles')
@@ -286,21 +283,20 @@ def select_files(btn, resp):
 This code creates the following page:
 
 <form>
-<div id="selectFiles" name="selectFiles">
-    <p>Select files to download.</p>
-    <div class="form-check">
-        <input id="helloWorld_exmpl4" name="selectFiles" type="checkbox" class="form-check-input" value="hello_world.txt">
-        <label class="form-check-label" for="helloWorld_exmpl4">Hello World</label>
+    <div id="selectFiles" name="selectFiles">
+        <p>Select files to download.</p>
+        <div class="form-check">
+            <input id="helloWorld" name="selectFiles" type="checkbox" class="form-check-input" value="hello_world.txt">
+            <label class="form-check-label" for="helloWorld">Hello World</label>
+        </div>
+        <div class="form-check">
+            <input id="helloMoon" name="selectFiles" type="checkbox" class="form-check-input" value="hello_moon.txt">
+            <label class="form-check-label" for="helloMoon">Hello Moon</label>
+        </div>
     </div>
-    <div class="form-check">
-        <input id="helloMoon_exmpl4" name="selectFiles" type="checkbox" class="form-check-input" value="hello_moon.txt">
-        <label class="form-check-label" for="helloMoon_exmpl4">Hello Moon</label>
-    </div>
-</div>
 </form>
-<br>
-<button id="DownloadBtn-1-btn" type="button" class="btn btn-primary w-100" style="">
-    Download Example 4
+<button class="btn btn-primary w-100" id="download_btn-2-btn" type="button">
+Download
 </button>
 
 **Note**: If you have multiple web forms on a page, select the form you want the download button to handle by settings its `form_id` attribute.
@@ -322,22 +318,22 @@ In this example, we assign two `CreateFile` functions to our download button. Be
 ```python
 import time
 
-@app.route('/example5')
-def example5():
-    btn = get_btn('example5')
+@app.route('/file-creation')
+def file_creation():
+    btn = get_btn('file-creation')
     if not btn:
         btn = DownloadBtn()
-        btn.text = 'Download Example 5'
         btn.cache = 'default'
-        CreateFile(btn, func=create_file1, kwargs={'seconds': 5})
-        CreateFile(btn, func=create_file2, kwargs={'centiseconds': 400})
+        CreateFile.create_file1(btn, seconds=5)
+        CreateFile.create_file2(btn, centiseconds=400)
         btn.downloads = [
             (HELLO_WORLD_URL, 'hello_world.txt'), 
             (HELLO_MOON_URL, 'hello_moon.txt')
         ]
-        add_to_session(btn, 'example5')
+        add_to_session(btn, 'file-creation')
     return render_template('index.html', download_btn=btn)
 
+@CreateFile.register
 def create_file1(btn, seconds):
     stage = 'Creating File 1'
     yield btn.reset(stage=stage, pct_complete=0)
@@ -348,6 +344,7 @@ def create_file1(btn, seconds):
         yield btn.report(stage, 100.0)
         time.sleep(1)
 
+@CreateFile.register
 def create_file2(btn, centiseconds):
     stage = 'Creating File 2'
     yield btn.reset(stage, 0)
@@ -375,11 +372,39 @@ During file creation, our download button and progress bar look like:
 </div>
 <br>
 
-### Example 6: With style
+### Example 6: Temporary file creation
 
-Example 6 combines elements from previous examples with styling.
+`CreateFile` functions are often useful for creating temporary download files. Temporary download files are stored in a download button's `tmp_downloads` attribute. Temporary files are deleted after download.
 
-In `templates/example6.html`:
+```python
+from base64 import b64encode
+
+@app.route('/tmp-files')
+def tmp_files():
+    btn = get_btn('tmp-files')
+    if not btn:
+        btn = DownloadBtn()
+        CreateFile.create_tmp_file(btn)
+        add_to_session(btn, 'tmp-files')
+    return render_template('index.html', download_btn=btn)
+
+@CreateFile.register
+def create_tmp_file(btn):
+    stage = 'Creating temporary file'
+    yield btn.reset(stage, 0)
+    data = b64encode(b'Hello World')
+    url = 'data:text/plain;base64,' + data.decode()
+    btn.tmp_downloads = [(url, 'tmp_file.txt')]
+    yield btn.report(stage, 100)
+```
+
+### Example 7: With style
+
+Example 7 combines elements from previous examples with styling.
+
+You can modify the button text with the `btn_text` attribute. The `DownloadBtn` has a `btn` attribute, which can be treated as a `BeautifulSoup` object (see [SQLAlchemy-MutableSoup](https://dsbowen.github.io/sqlalchemy-mutablesoup)). You can access the button and progress bar `Tag` objects with the `btn_tag` and `progress_bar_tag` attributes. 
+
+In `templates/style.html`:
 
 ```html
 <html>
@@ -418,23 +443,24 @@ In `templates/example6.html`:
 In `app.py`:
 
 ```python
-@app.route('/example6')
-def example6():
-    btn = get_btn('example6')
+@app.route('/style')
+def style():
+    btn = get_btn('style')
     if not btn:
         btn = DownloadBtn()
-        btn.btn_classes.remove('btn-primary')
-        btn.btn_classes.append('btn-outline-primary')
-        btn.progress_classes.append('progress-bar-striped')
-        btn.progress_classes.append('progress-bar-animated')
-        btn.text = 'Download Example 6'
+        btn.btn_text = 'Custom Button Text'
+        btn.btn_tag['class'].remove('btn-primary')
+        btn.btn_tag['class'].append('btn-outline-primary')
+        btn.progress_bar_tag['class'] += [
+            'progress-bar-striped', 'progress-bar-animated'
+        ]
         btn.cache = 'default'
-        HandleForm(btn, func=select_files)
-        CreateFile(btn, func=create_file1, kwargs={'seconds': 4})
-        CreateFile(btn, func=create_file2, kwargs={'centiseconds': 300})
+        HandleForm.select_files(btn)
+        CreateFile.create_file1(btn, seconds=4)
+        CreateFile.create_file2(btn, centiseconds=300)
         btn.download_msg = 'Download Complete'
-        add_to_session(btn, 'example6')
-    return render_template('example6.html', download_btn=btn)
+        add_to_session(btn, 'style')
+    return render_template('style.html', download_btn=btn)
 ```
 
 During download, our page will look like:
@@ -469,30 +495,6 @@ During download, our page will look like:
 </div>
 </div>
 <br>
-
-## Customization and defaults
-
-### Manager defaults
-
-Default settings for all download buttons can be changed by editing `download_btn_manager.default_settings`. For example, to change the default to striped progress bars:
-
-```python
-download_btn_manager.default_settings.progress_classes.append('progress-bar-striped')
-```
-
-### Styling
-
-A download button's classes and style can be changed with a download button's `btn_classes` and `btn_style` attribute, respectively. `btn_classes` is a list of button classes, while `style` is dictionary mapping CSS property names to values (e.g. `{'height': '20px'}`).
-
-Further customization can be achieved by defining a custom button template and setting a download button's `btn_template` attribute accorudingly:
-
-```python
-my_button.btn_template = 'my-btn-template.html'
-```
-
-See my [original button template](https://github.com/dsbowen/flask-download-btn/blob/master/flask_download_btn/templates/download_btn/button.html) for custom button template specifications.
-
-A button's `progress_classes`, `progress_style`, and `progress_template` attributes perform analogous functions for its progress bar.
 
 ### Cache and CSRF management
 

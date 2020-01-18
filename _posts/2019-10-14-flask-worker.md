@@ -10,13 +10,15 @@ Flask-Worker simplifies interaction with a Redis Queue for executing long-runnin
 
 Long-running tasks are managed by a Worker, who sends the client a loading page until it completes the task. Upon completing the task, the Worker automatically replaces the client's window with the loaded page.
 
+Readers can find the source code at [https://github.com/dsbowen/flask-worker](https://github.com/dsbowen/flask-worker).
+
 ## License
 
 Publications which use this software should include the following citations for Flask-Worker and its dependency, [SQLAlchemy-Mutable](https://pypi.org/project/sqlalchemy-mutable/).
 
-Bowen, D.S. (2019). Flask-Worker [Compluter software]. [https://github.com/dsbowen/flask-worker](https://github.com/dsbowen/flask-worker)
+Bowen, D.S. (2019). Flask-Worker [Compluter software]. [https://github.com/dsbowen/flask-worker](https://github.com/dsbowen/flask-worker).
 
-Bowen, D.S. (2019). SQLAlchemy-Mutable [Computer software]. [https://github.com/dsbowen/sqlalchemy-mutable](https://github.com/dsbowen/sqlalchemy-mutable)
+Bowen, D.S. (2019). SQLAlchemy-Mutable [Computer software]. [https://github.com/dsbowen/sqlalchemy-mutable](https://github.com/dsbowen/sqlalchemy-mutable).
 
 This project is licensed under the MIT License [LICENSE](https://github.com/dsbowen/flask-worker/blob/master/LICENSE).
 

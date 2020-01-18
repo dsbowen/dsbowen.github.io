@@ -10,13 +10,15 @@ SQLAlchemy-Function defines a [SQLALchemy Mixin](https://docs.sqlalchemy.org/en/
 
 A `Function` model has a parent (optional), a function, arguments, and keyword arguments. When called, the `Function` model executes its function, passing in its parent (if applicable), its arguments, and its keyword arguments.
 
+Readers can find the source code at [https://github.com/dsbowen/sqlalchemy-function](https://github.com/dsbowen/sqlalchemy-function).
+
 ## License
 
 Publications which use this software should include the following citation for SQLAlchemy-Function and its dependency, [SQLAlchemy-Mutable](https://dsbowen.github.io/sqlalchemy-mutable):
 
-Bowen, D.S. (2019). SQLAlchemy-Function \[Computer software\]. [https://dsbowen.github.io/sqlalchemy-function](https://dsbowen.github.io/sqlalchemy-function)
+Bowen, D.S. (2019). SQLAlchemy-Function \[Computer software\]. [https://dsbowen.github.io/sqlalchemy-function](https://dsbowen.github.io/sqlalchemy-function).
 
-Bowen, D.S. (2019). SQLAlchemy-Mutable \[Computer software\]. [https://dsbowen.github.io/sqlalchemy-mutable](https://dsbowen.github.io/sqlalchemy-mutable)
+Bowen, D.S. (2019). SQLAlchemy-Mutable \[Computer software\]. [https://dsbowen.github.io/sqlalchemy-mutable](https://dsbowen.github.io/sqlalchemy-mutable).
 
 This project is licensed under the MIT License [LICENSE](https://github.com/dsbowen/sqlalchemy-function/blob/master/LICENSE).
 

@@ -18,7 +18,7 @@ Here are the prerequisites I recommend to take advantage of the full range of to
 
 With the above software, you are ready to create, share, and deploy Hemlock projects.
 
-The software below is encouraged for debugging, file storage, and Redis testing. These are less essential. If you're eager to get started with Hemlock, you can come back to these if and when you need them.
+The software below is encouraged for debugging, file storage, and Redis testing. They are not essential. If you're eager to get started with Hemlock, you can come back to these if and when you need them.
 
 **Encouraged**
 1. *Google Chrome and Chromedriver*. Hemlock's custom debugging tool requires [Google Chrome](https://www.google.com/chrome/) and [Chromedriver](https://chromedriver.chromium.org/downloads) to run locally.
@@ -45,20 +45,20 @@ Open an Ubuntu terminal. You will be prompted to create a username and password.
 
 Ubuntu should include Python3.6. Verify your Python installation with:
 
-```
+```bash
 $ python3 --version
 Python 3.6.x
 ```
 
 Update your package lists with:
 
-```
+```bash
 $ sudo apt-get update
 ```
 
 Install pip3 with:
 
-```
+```bash
 $ sudo apt install -f -y python3-pip
 ```
 
@@ -66,7 +66,7 @@ Respond 'Yes' if asked whether you want to restart services automatically.
 
 Finally, verify pip3 installation:
 
-```
+```bash
 $ pip3 --version
 pip x.x.x from /usr/lib/python3/dist-packages (python 3.6)
 ```
@@ -75,13 +75,13 @@ pip x.x.x from /usr/lib/python3/dist-packages (python 3.6)
 
 pip install the Hemlock command line interface (CLI):
 
-```
+```bash
 $ pip3 install hemlock-cli
 ```
 
 Verify `hemlock-cli` installation:
 
-```
+```bash
 $ hlk --version
 hlk, version x.x.x
 ```
@@ -90,13 +90,13 @@ hlk, version x.x.x
 
 Install other Hemlock utilities and recommended software with `hlk setup [options]`. The options specify which recommended software tools you want to download. To download all recommended software, run:
 
-```
+```bash
 $ hlk setup --all
 ```
 
 This is equivalent to:
 
-```
+```bash
 $ hlk setup --vscode --heroku-cli --git --chrome --cloud-sdk
 ```
 
@@ -106,7 +106,7 @@ You will also be prompted to login or create accounts for Heroku-CLI, Git, and C
 
 To verify the installations, close and re-open the Ubuntu terminal, then enter:
 
-```
+```bash
 $ code --version
 $ heroku --version
 $ git --version
@@ -115,9 +115,9 @@ $ chromedriver --version
 $ gcloud --version
 ```
 
-Finally, if you are using gcloud, you will need the alpha component:
+Finally, if you are using Cloud SDK, you will need the alpha component:
 
-```
+```bash
 $ gcloud components install alpha
 ```
 
