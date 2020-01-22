@@ -14,11 +14,13 @@ Readers can find the source code at [https://github.com/dsbowen/flask-worker](ht
 
 ## License
 
-Publications which use this software should include the following citations for Flask-Worker and its dependency, [SQLAlchemy-Mutable](https://pypi.org/project/sqlalchemy-mutable/).
+Publications which use this software should include the following citations for Flask-Worker and its dependencies, [SQLAlchemy-Mutable](https://pypi.org/project/sqlalchemy-mutable/) and [SQLAlchemy-MutableSoup](https://dsbowen.github.io/sqlalchemy-mutablesoup).
 
 Bowen, D.S. (2019). Flask-Worker [Compluter software]. [https://github.com/dsbowen/flask-worker](https://github.com/dsbowen/flask-worker).
 
 Bowen, D.S. (2019). SQLAlchemy-Mutable [Computer software]. [https://github.com/dsbowen/sqlalchemy-mutable](https://github.com/dsbowen/sqlalchemy-mutable).
+
+Bowen, D.S. (2020). SQLAlchemy-MutableSoup [Computer software]. [https://dsbowen.github.io/sqlalchemy-mutablesoup](https://dsbowen.github.io/sqlalchemy-mutablesoup).
 
 This project is licensed under the MIT License [LICENSE](https://github.com/dsbowen/flask-worker/blob/master/LICENSE).
 
@@ -449,34 +451,25 @@ Because we reset the router once the series of function calls has completed, fut
 
 ## Customization and defaults
 
+A worker's loading page is stored in its `loading_page` attribute, which can be treated as a `BeautifulSoup` object (see (SQLAlchemy-MutableSoup)[https://dsbowen.github.io/sqlalchemy-mutablesoup]).
+
 Change a worker's loading image with:
 
 ```python
-my_worker.loading_img = 'my-loading-img.gif'
+my_worker.loading_img_src = 'loading-img-src'
 ```
 
-Change the default loading image for all workers using the manager:
+By default, workers look for a file named `worker_loading.gif` in the `static` folder. You can change the name of the loading image file or set a blueprint in which workers look for their loading image with:
 
 ```python
-my_manager.loading_img = 'my-loading-img.gif'
-```
-
-If a worker's loading image is in the static folder of a blueprint, indicate this with:
-
-```python
-my_worker.blueprint = 'my-blueprint'
-```
-
-Change the default blueprint for all workers using the manager:
-
-```python
+my_manager.loading_img_filename = 'loading-img-filename.gif'
 my_manager.blueprint = 'my-blueprint'
 ```
 
-Change a worker's loading template with:
+You can pass in a custom `template` to a worker's constructor to initialize the `loading_page`:
 
 ```python
-my_worker.template = 'my-template.html'
+my_worker = Worker(template='my-template.html')
 ```
 
 Change the default loading template for all workers using the manager:
@@ -485,10 +478,4 @@ Change the default loading template for all workers using the manager:
 my_manager.template = 'my-template.html'
 ```
 
-Loading templates take their worker as a `worker` argument. They should include the worker's script in their head:
-
-```html
-<head>
-  {% raw %}{{ worker.script() }}{% endraw %}
-</head>
-```
+Loading templates take their worker as a `worker` argument. They should include a `<head>`, into which the worker will inject its `script` before rendering.
