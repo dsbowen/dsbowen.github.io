@@ -463,7 +463,7 @@ By default, workers look for a file named `worker_loading.gif` in the `static` f
 
 ```python
 my_manager.loading_img_filename = 'loading-img-filename.gif'
-my_manager.blueprint = 'my-blueprint'
+my_manager.loading_img_blueprint = 'my-blueprint'
 ```
 
 You can pass in a custom `template` to a worker's constructor to initialize the `loading_page`:
