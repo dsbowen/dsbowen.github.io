@@ -6,6 +6,7 @@ categories:
 tags:
     - forecasting
     - machine learning
+    - dash
 ---
 
 Dash-Forecast allows you to easily build forecasting dashboards.
