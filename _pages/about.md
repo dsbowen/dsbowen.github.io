@@ -15,7 +15,7 @@ I graduated from Tufts University in 2016 with a bachelor's in cognitive science
 
 ## Hemlock
 
-In 2020, I released an alpha version of <a href="https://dsbowen.github.io/hemlock/" target="_blank">hemlock</a>, a python package which aspires to be the most powerful and flexible way to create studies, with applications in marketing and behavioral science research.
+In 2020, I released an alpha version of <a href="https://dsbowen.gitlab.io/hemlock/" target="_blank">hemlock</a>, a python package which aspires to be the most powerful and flexible way to create studies, with applications in marketing and behavioral science research.
 
 I had the idea for cyborg forecasting systems in the first year of my PhD. But even if I built a machine learning tool to interface with human experts, I realized I would have no way to test it in a behavioral study. To solve this problem, I spent every evening and weekend during the first two years of my PhD building a powerful survey creation software. One of hemlock's defining features is its ability to run interactive machine learning algorithms in real time during behavioral studies.
 
@@ -29,7 +29,7 @@ I had the idea for cyborg forecasting systems in the first year of my PhD. But e
 
 **A good tool makes simple things easy and complex things possible.** Simple is better than complex, but complex is increasingly necessary. To facilitate work at every level, we need tools that allow us to execute simple tasks easily while granting us the power and flexibility to pursue complex ideas. This is the philosophy powering <a href="https://dsbowen.github.io/hemlock" target="_blank">hemlock</a>.
 
-**Technical sophistocation is necessary for scientific progress.** Every scientific field has become and continues to become more technically sophisticated. Behavioral science is no exception. The low-hanging fruit has been picked - new biases are no longer waiting to be discovered around every corner - and technically sophisticated methods are necessary for the field to progress.
+**Technical sophistication is necessary for scientific progress.** Every scientific field has become and continues to become more technically sophisticated. Behavioral science is no exception. The low-hanging fruit has been picked - new biases are no longer waiting to be discovered around every corner - and technically sophisticated methods are necessary for the field to progress.
 
 **The only thing that matters is what you create.** Your accolades and alma mater aren't going to change the world. The only thing that matters is what you create, whether it's an invention, a software package, a paper, or a work of art. You can even create an inspiring idea or a lifelong friendship. Forget the scholarships, the prestige, and the medals. Those will come. Learn the skills you need to create something extraordinary, then make it.
 

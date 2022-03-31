@@ -1,6 +1,6 @@
 ---
 title: "SQLAlchemy mutable"
-date: 2020-06-09
+date: 2022-03-31
 categories:
     - software
 tags:
@@ -18,4 +18,4 @@ Its features include:
 5. Support for custom mutable classes
 6. Support for converting existing classes to mutable classes
 
-<a href="https://dsbowen.github.io/sqlalchemy-mutable" target="_blank">Read the docs</a>.
+<a href="https://dsbowen.gitlab.io/sqlalchemy-mutable" target="_blank">Read the docs</a>.
