@@ -1,4 +1,9 @@
-# Rethinking the relationship between age and ability
+---
+title: "Rethinking the relationship between age and ability"
+date: 2023-07-28
+categories:
+tags:
+---
 
 I used to have a fairly defeatist attitude about age and achievement. Groundbreaking achievements seem to come disproportionately from younger people; what I call the *achievement gap*. Nobel Laureates typically do their prizewinning work in their 20s and 30s. Successful entrepreneurs often start their companies before age 30. Artists make their greatest breakthroughs while they're young (often with some help from "cognitive enhancers").
 
