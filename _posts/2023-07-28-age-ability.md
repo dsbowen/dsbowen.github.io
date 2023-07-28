@@ -5,6 +5,8 @@ categories:
 tags:
 ---
 
+{% include mathjax.html %}
+
 I used to have a fairly defeatist attitude about age and achievement. Groundbreaking achievements seem to come disproportionately from younger people; what I call the *achievement gap*. Nobel Laureates typically do their prizewinning work in their 20s and 30s. Successful entrepreneurs often start their companies before age 30. Artists make their greatest breakthroughs while they're young (often with some help from "cognitive enhancers").
 
 Based on this, it's easy to conclude that as we get older, our abilities decline, making truly great achievements increasingly unlikely. In other words, the achievement gap is best explained by an *ability gap*. But I've reconsidered based on a simple statistical argument.
